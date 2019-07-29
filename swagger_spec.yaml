@@ -1,0 +1,406 @@
+swagger: "2.0"
+info:
+  description: "This is a a simple flask api to enable flight booking "
+  version: "1.0.0"
+  title: "Flight Booking Application"
+host: "https://flightbooking-api.herokuapp.com/"
+basePath: "/v1/"
+tags:
+- name: "auth"
+  description: "Operations about a user"
+- name: "flight"
+  description: "Operations about flights"
+- name: "booking"
+  description: "Operations about bookings"
+- name: "users"
+  description: "Operations about users"
+schemes:
+- "https"
+- "http"
+
+paths:
+  /auth/register/:
+    post:
+      tags:
+      - "auth"
+      summary: "Add a new user"
+      description: ""
+      operationId: "RegisterUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "User object that needs to be added to the store"
+        required: true
+        schema:
+          properties:
+            first_name:
+              type: "string"
+            last_name:
+              type: "string"
+            email:
+              type: "string"
+            password:
+              type: "string"
+      responses:
+        200:
+          description: "User registration successful"
+          schema:
+            properties:
+              details:
+                type: "string"
+              message:
+                type: "string"
+              status:
+                type: "string"
+        400:
+          description: "Invalid input"
+          schema:
+            properties:
+              status:
+                type: "string"
+              error:
+                type: "string"
+  /auth/login/:
+    post:
+      tags:
+      - "auth"
+      summary: "Generate token for valid user"
+      description: ""
+      operationId: "LoginUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Login details"
+        required: true
+        schema:
+          properties:
+              email:
+                type: "string"
+              password:
+                type: "string"
+      responses:
+        200:
+          description: "Login successful"
+          schema:
+            properties:
+                token:
+                  type: "string"
+                message:
+                  type: "string"
+                status:
+                  type: "string"
+        401:
+          description: "UnAuthorized"
+          schema:
+            properties:
+                error:
+                  type: "string"
+                status:
+                  type: "string"
+  /flight/:
+    post:
+      security:
+        - Bearer: []
+      tags:
+      - "flight"
+      summary: "Create a flight, this is strictly done is you have admin rights"
+      description: ""
+      operationId: "CreateFlight"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "token"
+        description: "Authorization details which is a valid JWT token"
+        type: "string"
+        required: true
+   
+      - in: "body"
+        name: "body"
+        description: "Flight object that needs to be created"
+        required: true
+        schema:
+          properties:
+              departure_from:
+                type: "string"
+              departure_time:
+                type: "string"
+              destination:
+                type: "string"
+              number_of_seats:
+                type: "integer"
+      responses:
+        200:
+          description: "Login successful"
+          schema:
+            properties:
+                details:
+                  type: "string"
+                message:
+                  type: "string"
+                status:
+                  type: "string"
+        400:
+          description: "Invalid input"
+          schema:
+            properties:
+                error:
+                  type: "string"
+                status:
+                  type: "string"
+        403:
+          description: "Forbidden"
+          schema:
+            properties:
+                error:
+                  type: "string"
+                status:
+                  type: "string"
+  /bookings/:
+    get:
+      security:
+        - Bearer: []
+      tags:
+      - "booking"
+      summary: "Lists of flights available for booking"
+      description: "Returns an array of flights for booking"
+      operationId: "getFlights"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "header"
+          name: "token"
+          description: "Authorization details which is a valid JWT token"
+          type: "string"
+          required: true
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/Flight'
+  /bookings/{flight_id}/:
+    get:
+      security:
+        - Bearer: []
+      tags:
+      - "booking"
+      summary: "Get a flight for booking"
+      description: "Returns details for apscific flight for booking"
+      operationId: "getFlight"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "path"
+          name: "flight_id"
+          type: "string"
+          required: true
+        - in: "header"
+          name: "token"
+          description: "Authorization details which is a valid JWT token"
+          type: "string"
+          required: true
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/Flight'
+        404:
+          description: "Not found"
+    post:
+      security:
+        - Bearer: []
+      tags:
+      - "booking"
+      summary: "Generate token for valid user"
+      description: ""
+      operationId: "BookFlight"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "flight_id"
+        type: "string"
+        required: true
+      - in: "header"
+        name: "token"
+        description: "Authorization details which is a valid JWT token"
+        type: "string"
+        required: true
+      - in: "body"
+        name: "body"
+        description: "Login details"
+        required: true
+        schema:
+          properties:
+              seats_to_book:
+                type: "integer"
+      responses:
+        200:
+          description: "Login successful"
+          schema:
+            properties:
+                details:
+                  type: "string"
+                message:
+                  type: "string"
+                status:
+                  type: "string"
+        400:
+          description: "Invalid input"
+          schema:
+            properties:
+              status:
+                type: "string"
+              error:
+                type: "string"
+        401:
+          description: "UnAuthorized"
+          schema:
+            properties:
+                error:
+                  type: "string"
+                status:
+                  type: "string"
+  /user/profile_picture/:
+    post:
+      security:
+        - Bearer: []
+      tags: 
+      - "users"
+      summary: "Upload a user profile picture"
+      description: ""
+      operationId: "profilePictureUpload"
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "token"
+        description: "Authorization details which is a valid JWT token"
+        type: "string"
+        required: true
+      - name: "image"
+        in: "formData"
+        description: "file to upload"
+        required: true
+        type: "file"
+      responses:
+        200:
+          description: "Login successful"
+          schema:
+            properties:
+                profile_picture_url:
+                  type: "string"
+        400:
+          description: "No file uploaded"
+          schema:
+            properties:
+              message:
+                type: "string"
+        500:
+          description: "Unable to upload picture"
+          schema:
+            properties:
+              message:
+                type: "string"
+  /users/{flight_id}/:
+    get:
+      security:
+        - Bearer: []
+      tags:
+      - "users"
+      summary: "Get a list of users  booked on a specified flight"
+      description: "Returns users booked on a flight"
+      operationId: "getBookedUsers"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "path"
+          name: "flight_id"
+          type: "string"
+          required: true
+        - in: "header"
+          name: "token"
+          description: "Authorization details which is a valid JWT token for a user with Admin rights"
+          type: "string"
+          required: true
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/User'
+        403:
+          description: "Forbidden"
+
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+definitions:
+    User:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+        first_name:
+          type: "string"
+        last_name:
+          type: "string"
+        email:
+          type: "string"
+        profile_pic:
+          type: "string"
+    Flight:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+        departure_from:
+          type: "string"
+        departure_time:
+          type: "string"
+        destination:
+          type: "string"
+        created_at:
+          type: "string"
+        updated_at:
+          type: "string"
+        seats:
+          $ref: "#/definitions/Seats"
+        
+    Seats:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+        available_seats:
+          type: "integer"
+        booked_seats:
+          type: "integer"
+        number_of_seats:
+          type: "integer"
+        created_at:
+          type: "string"
+        updated_at:
+          type: "string"
