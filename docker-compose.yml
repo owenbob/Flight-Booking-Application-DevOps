@@ -1,5 +1,22 @@
 version: '3'
 services:
+  redis:
+    container_name: flight_app_redis
+    image: redis
+    command: redis-server
+    ports:
+      - "7777:7777"
+
+  celery:
+    container_name: flight_app_celery
+    build:
+      context: .
+      dockerfile: docker/celery/Dockerfile
+    command: celery worker -A api.celery --loglevel=INFO --beat -A api.celery --schedule=/tmp/celerybeat-schedule --loglevel=INFO --pidfile=/tmp/celerybeat.pid
+    depends_on:
+      - backend-core
+      - redis
+
   database:
     container_name: flight_app_postgres
     build:
