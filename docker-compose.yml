@@ -9,7 +9,7 @@ services:
       - "5432:5432"
 
   backend-core:
-    container_name: flight_app_bankend_core
+    container_name: flight_app_backend_core
     build:
       context: .
       dockerfile: docker/flight-app/Dockerfile

@@ -1,22 +1,48 @@
 [run]
 # ignore test coverage for the following file or folders on run
 omit = 
+    *amqp*
+    *asn1crypto*
     *asyncio*
+    *billiard*
+    *cachetools*
+    *celery*
+    *certifi*
+    *cffi*
+    *chardet*
+    *click*
     *concurrent*
     *ctypes*
     *encodings*
     *email*
+    *flask*
+    *flask_sqlalchemy*
+    *google*
     *html*
     *http*
+    *idna*
+    *itsdangerous*
+    *jinja2*
+    *jwt*
+    *kombu*
     *logging*
+    *markupsafe*
     *multiprocessing*
+    *psycopg2*
+    *pytz*
+    *requests*
+    *sqlalchemy*
     *unittest*
+    *urllib3*
     *venv*
+    *vine*
+    *werkzeug*
     *decimal.py
     *hmac.py
     *mimetypes.py
     *netrc.py
     *numbers.py
+    *six.py
     *smtplib.py
     *stringprep.py
     *typing.py
@@ -25,22 +51,49 @@ omit =
 [report]
 # ignore test coverage for the following file or folders on report
 omit = 
+    *amqp*
+    *asn1crypto*
     *asyncio*
+    *billiard*
+    *cachetools*
+    *celery*
+    *certifi*
+    *cffi*
+    *chardet*
+    *click*
     *concurrent*
+    *cryptography*
     *ctypes*
     *encodings*
     *email*
+    *flask*
+    *flask_sqlalchemy*
+    *google*
     *html*
     *http*
+    *idna*
+    *itsdangerous*
+    *jinja2*
+    *jwt*
+    *kombu*
     *logging*
+    *markupsafe*
     *multiprocessing*
+    *psycopg2*
+    *pytz*
+    *requests*
+    *sqlalchemy*
     *unittest*
+    *urllib3*
     *venv*
+    *vine*
+    *werkzeug*
     *decimal.py
     *hmac.py
     *mimetypes.py
     *netrc.py
     *numbers.py
+    *six.py
     *smtplib.py
     *stringprep.py
     *typing.py
