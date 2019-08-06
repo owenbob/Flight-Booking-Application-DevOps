@@ -111,3 +111,9 @@ migrations/
 
 # Google auth json file
 Flight Application-a35b43d1a64b.json
+
+#environment files
+env/
+
+#test upload file
+upload.jpeg

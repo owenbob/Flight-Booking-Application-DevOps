@@ -11,7 +11,6 @@ class Register(MethodView):
     """ View to handle user registration"""
     def post(self):
         data = request.get_json()
-        # import pdb; pdb.set_trace()
 
         # Assign request body entities
         first_name = data.get("first_name")

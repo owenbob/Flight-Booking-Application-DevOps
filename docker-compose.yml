@@ -1,6 +1,7 @@
 version: '3'
 services:
   database:
+    container_name: flight_app_postgres
     build:
       context: .
       dockerfile: docker/database/Dockerfile
@@ -8,13 +9,16 @@ services:
       - "5432:5432"
 
   backend-core:
+    container_name: flight_app_bankend_core
     build:
       context: .
       dockerfile: docker/flight-app/Dockerfile
-    command: bash -c " python manage.py db init && python manage.py db migrate && python manage.py db upgrade && python run.py"
+    command:  bash -c "chmod +x scripts/start_script.sh  && scripts/start_script.sh"
     volumes:
       - .:/src
     ports:
       - "5000:5000"
+    env_file:
+      - env/flight_app.env
     depends_on:
       - database
